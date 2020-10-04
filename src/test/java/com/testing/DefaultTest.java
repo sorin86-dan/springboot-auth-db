@@ -18,7 +18,7 @@ public class DefaultTest {
         Response response = RestAssured.given()
                 .header("Content-Type", "application/json")
                 .body("{\"id\":\"OK\", \"db\":\"Redis\"}")
-                .post("http://172.0.0.2:8081/auth-message");
+                .post("http://localhost:8081/auth-message");
 
         assertEquals(response.getStatusCode(), 200);
         assertTrue(response.getBody().asString().contains("The chosen database is: Redis"));
@@ -29,7 +29,7 @@ public class DefaultTest {
         Response response = RestAssured.given()
                 .header("Content-Type", "application/json")
                 .body("{\"db\":\"Redis\"}")
-                .post("http://172.0.0.2:8081/auth-message");
+                .post("http://localhost:8081/auth-message");
 
         assertEquals(response.getStatusCode(), 401);
         assertTrue(response.getBody().asString().contains("Authorization failed"));
@@ -40,7 +40,7 @@ public class DefaultTest {
         Response response = RestAssured.given()
                 .header("Content-Type", "application/json")
                 .body("{\"id\":\"NOK\", \"db\":\"Redis\"}")
-                .post("http://172.0.0.2:8081/auth-message");
+                .post("http://localhost:8081/auth-message");
 
         assertEquals(response.getStatusCode(), 401);
         assertEquals(response.getBody().asString(), "Authorization failed");

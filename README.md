@@ -32,3 +32,15 @@ docker run -d -p 8081:8081 --net microservices-grid --ip 172.0.0.2 auth
 docker run -d -p 8080:8080 --net microservices-grid --ip 172.0.0.3 db
 mvn clean test
 ```
+
+### Push docker images to DockerHub
+
+Next run the following command to push docker images to DockerHub (after creating the repository **sorindan86/docker-sorin**):
+```shell script
+docker login
+docker images
+docker tag <image-id> sorindan86/docker-sorin:auth
+docker tag <image-id> sorindan86/docker-sorin:db
+docker push sorindan86/docker-sorin:auth
+docker push sorindan86/docker-sorin:db
+```
