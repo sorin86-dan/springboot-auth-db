@@ -23,13 +23,13 @@ WORKDIR springboot-db
 #=============================================================
 # Build code
 #=============================================================
-RUN mvn clean install -DskipTests
+#RUN mvn clean install -DskipTests
 
 #=============================================================
 # Start application
 #=============================================================
 RUN mvn package spring-boot:repackage && \
- cp springboot-db-1.0-SNAPSHOT.jar db.jar
+ cp target/springboot-db-1.0-SNAPSHOT.jar db.jar
 
 ENTRYPOINT ["java","-jar","db.jar"]
 EXPOSE 8080
