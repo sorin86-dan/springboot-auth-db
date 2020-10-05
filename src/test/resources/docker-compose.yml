@@ -1,0 +1,32 @@
+version: "2"
+services:
+  auth:
+    build:
+      context: .
+      dockerfile: DockerfileAuth
+    container_name: auth-ms
+    ports:
+      - "8081:8081"
+    expose:
+      - 8081
+    networks:
+      grid:
+        ipv4_address: 172.0.0.2
+  db:
+    build:
+      context: .
+      dockerfile: DockerfileDB
+    container_name: db-ms
+    ports:
+      - "8080:8080"
+    expose:
+      - 8080
+    networks:
+      grid:
+        ipv4_address: 172.0.0.3
+
+networks:
+  grid:
+    ipam:
+      config:
+        - subnet: 172.0.0.0/16

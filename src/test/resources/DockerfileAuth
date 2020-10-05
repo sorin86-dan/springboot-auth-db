@@ -1,0 +1,35 @@
+FROM openjdk:11
+
+USER root
+
+#=============================================================
+# Install Git
+#=============================================================
+RUN apt-get update && \
+ apt-get install git -y
+
+#=============================================================
+# Install Maven
+#=============================================================
+RUN apt-get update && \
+ apt-get install maven -y
+
+#=============================================================
+# Clone code
+#=============================================================
+RUN git clone https://github.com/sorin86-dan/springboot-auth.git
+WORKDIR springboot-auth
+
+#=============================================================
+# Build code
+#=============================================================
+RUN mvn clean install -DskipTests
+    
+#=============================================================
+# Start application
+#=============================================================
+RUN mvn package spring-boot:repackage && \
+ cp springboot-auth-1.0-SNAPSHOT.jar auth.jar
+
+ENTRYPOINT ["java","-jar","auth.jar"]
+EXPOSE 8081

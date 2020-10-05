@@ -1,0 +1,35 @@
+FROM openjdk:11
+
+USER root
+
+#=============================================================
+# Install Git
+#=============================================================
+RUN apt-get update && \
+ apt-get install git -y
+
+#=============================================================
+# Install Maven
+#=============================================================
+RUN apt-get update && \
+ apt-get install maven -y
+
+#=============================================================
+# Clone code
+#=============================================================
+RUN git clone https://github.com/sorin86-dan/springboot-db.git
+WORKDIR springboot-db
+
+#=============================================================
+# Build code
+#=============================================================
+RUN mvn clean install -DskipTests
+
+#=============================================================
+# Start application
+#=============================================================
+RUN mvn package spring-boot:repackage && \
+ cp springboot-db-1.0-SNAPSHOT.jar db.jar
+
+ENTRYPOINT ["java","-jar","db.jar"]
+EXPOSE 8080
