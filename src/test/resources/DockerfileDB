@@ -11,8 +11,12 @@ RUN apt-get update && \
 #=============================================================
 # Install Maven
 #=============================================================
-RUN apt-get update && \
- apt-get install maven -y
+RUN apt-get install maven -y
+
+#=============================================================
+# Install Redis
+#=============================================================
+RUN apt-get install redis-server -y
 
 #=============================================================
 # Clone code
@@ -21,15 +25,10 @@ RUN git clone https://github.com/sorin86-dan/springboot-db.git
 WORKDIR springboot-db
 
 #=============================================================
-# Build code
-#=============================================================
-#RUN mvn clean install -DskipTests
-
-#=============================================================
 # Start application
 #=============================================================
 RUN mvn package spring-boot:repackage && \
  cp target/springboot-db-1.0-SNAPSHOT.jar db.jar
 
 ENTRYPOINT ["java","-jar","db.jar"]
-EXPOSE 8080
+EXPOSE 8082

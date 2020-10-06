@@ -18,9 +18,9 @@ services:
       dockerfile: DockerfileDB
     container_name: db-ms
     ports:
-      - "8080:8080"
+      - "8082:8082"
     expose:
-      - 8080
+      - 8082
     networks:
       grid:
         ipv4_address: 172.0.0.3
