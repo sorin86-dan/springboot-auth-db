@@ -14,11 +14,6 @@ RUN apt-get update && \
 RUN apt-get install maven -y
 
 #=============================================================
-# Install Redis
-#=============================================================
-RUN apt-get install redis-server -y
-
-#=============================================================
 # Clone code
 #=============================================================
 RUN git clone https://github.com/sorin86-dan/springboot-db.git
