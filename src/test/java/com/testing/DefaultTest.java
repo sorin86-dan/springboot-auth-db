@@ -10,8 +10,10 @@ import static org.testng.Assert.assertTrue;
 
 public class DefaultTest {
 
-    private String authIpAddress = "172.0.0.2";
-    private String dbIpAddress = "172.0.0.3";
+//    private String authIpAddress = "172.0.0.2";
+//    private String dbIpAddress = "172.0.0.3";
+    private String authIpAddress = "localhost";
+    private String dbIpAddress = "localhost";
 
     @BeforeTest
     public void setUp() {
