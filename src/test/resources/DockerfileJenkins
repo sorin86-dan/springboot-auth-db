@@ -32,10 +32,4 @@ RUN echo "jenkins ALL=NOPASSWD: ALL" >> /etc/sudoers
 RUN apt-get update \
       && apt-get install maven -y
 
-RUN mvn -v
-RUN java -version
-RUN echo "${JAVA_HOME}"
-RUN echo "${M3_HOME}"
-
-
 USER jenkins
