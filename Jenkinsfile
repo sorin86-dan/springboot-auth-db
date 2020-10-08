@@ -1,7 +1,9 @@
 pipeline {
 
     agent any
-
+    tools {
+        maven 'Maven 3.6.0'
+    }
     stages {
         stage('Retrieve code from GitHub') {
             steps {
@@ -12,7 +14,7 @@ pipeline {
         stage('Build and run springboot-auth, springboot-db and Redis Docker instances') {
             steps {
                 dir ('src/test/resources') {
-                  sh 'docker-compose up'
+                  sh 'sudo docker-compose up -d'
                 }
             }
         }
@@ -27,7 +29,7 @@ pipeline {
             steps {
                 sh 'docker stop $(docker ps -a -q)'
                 sh 'docker system prune --all'
-                sh 'yes'
+                sh 'y'
             }
         }
     }
