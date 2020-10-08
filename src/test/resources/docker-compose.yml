@@ -25,7 +25,7 @@ services:
       grid:
         ipv4_address: 172.0.0.3
   redis:
-    image: redis
+    image: bitnami/redis
     container_name: redis-db
     ports:
       - "6379:6379"
