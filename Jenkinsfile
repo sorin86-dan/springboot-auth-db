@@ -22,6 +22,7 @@ pipeline {
 
         stage('Run automated integration tests') {
             steps {
+                sh 'sudo docker network connect resources_grid jenkins-container'
                 sh 'mvn clean test'
             }
         }
@@ -29,9 +30,8 @@ pipeline {
 
     post {
         always {
-            sh 'docker stop $(docker ps -a -q)'
-            sh 'docker system prune'
-            sh 'y'
+            sh 'sudo docker stop redis-db db-ms auth-ms automated-tests'
+            sh 'sudo docker system prune -a -f'
         }
     }
 }
