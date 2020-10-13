@@ -12,7 +12,7 @@ pipeline {
             }
         }
 
-        stage('Build and run springboot-auth, springboot-db and Redis Docker instances') {
+        stage('Build and run Docker instances') {
             steps {
                 dir ('src/test/resources') {
                   sh 'sudo docker-compose up -d'

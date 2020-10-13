@@ -36,6 +36,14 @@ services:
     networks:
       grid:
         ipv4_address: 172.0.0.4
+  test:
+    build:
+      context: .
+      dockerfile: DockerfileTest
+    container_name: automated-tests
+    networks:
+      grid:
+        ipv4_address: 172.0.0.5
 
 networks:
   grid:
