@@ -23,8 +23,3 @@ WORKDIR springboot-auth-db
 # Build automated tests
 #=============================================================
 RUN mvn clean install -DskipTests
-
-#=============================================================
-# Run automated tests
-#=============================================================
-RUN mvn clean test

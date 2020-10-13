@@ -25,13 +25,13 @@ pipeline {
                 sh 'mvn clean test'
             }
         }
+    }
 
-        stage('Stop and remove Docker instances') {
-            steps {
-                sh 'docker stop $(docker ps -a -q)'
-                sh 'docker system prune --all'
-                sh 'y'
-            }
+    post {
+        always {
+            sh 'docker stop $(docker ps -a -q)'
+            sh 'docker system prune'
+            sh 'y'
         }
     }
 }
