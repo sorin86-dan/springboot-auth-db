@@ -30,7 +30,7 @@ pipeline {
 
     post {
         always {
-            sh 'sudo docker stop redis-db db-ms auth-ms automated-tests'
+            sh 'sudo docker stop redis-db db-ms auth-ms'
             sh 'sudo docker system prune -a -f'
         }
     }
