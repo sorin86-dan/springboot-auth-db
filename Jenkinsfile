@@ -1,18 +1,21 @@
 pipeline {
 
     agent any
-    tools {
-        maven 'Maven 3.6.0'
-        jdk 'jdk11'
-    }
+
     stages {
-        stage('Retrieve code from GitHub') {
+        stage('Retrieve code') {
             steps {
                 git 'https://github.com/sorin86-dan/springboot-auth-db'
             }
         }
 
-        stage('Build and run Docker instances') {
+        stage('Build code') {
+            steps {
+                sh 'mvn clean install -DskipTests'
+            }
+        }
+
+        stage('Build and run apps') {
             steps {
                 dir ('src/test/resources') {
                   sh 'sudo docker-compose up -d'
@@ -20,9 +23,9 @@ pipeline {
             }
         }
 
-        stage('Run automated integration tests') {
+        stage('Run automated tests') {
             steps {
-                sh 'sudo docker network connect resources_grid jenkins-container'
+                sh 'if ! [ "$(sudo docker network inspect resources_grid | grep jenkins-container)" ]; then sudo docker network connect resources_grid jenkins-container; fi'
                 sh 'mvn clean test'
             }
         }
@@ -32,6 +35,7 @@ pipeline {
         always {
             sh 'sudo docker stop redis-db db-ms auth-ms'
             sh 'sudo docker system prune -a -f'
+            step([$class: 'Publisher', reportFilenamePattern: '**/testng-results.xml'])
         }
     }
 }
