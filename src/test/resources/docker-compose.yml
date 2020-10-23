@@ -7,8 +7,6 @@ services:
     container_name: auth-ms
     ports:
       - "8081:8081"
-    expose:
-      - 8081
     networks:
       grid:
         ipv4_address: 172.0.0.2
@@ -19,20 +17,15 @@ services:
     container_name: db-ms
     ports:
       - "8082:8082"
-    expose:
-      - 8082
     networks:
       grid:
         ipv4_address: 172.0.0.3
   redis:
     image: redis
     container_name: redis-db
-    command: [ "redis-server", "--protected-mode", "no" ]
     hostname: 172.0.0.4
     ports:
       - "6379:6379"
-    expose:
-      - 6379
     networks:
       grid:
         ipv4_address: 172.0.0.4
