@@ -29,7 +29,14 @@ In the folder *springboot-auth-db* run:
 mvn clean install -DskipTests
 docker network create --subnet=172.0.0.0/16 microservices-grid
 docker run -d -p 8081:8081 --net microservices-grid --ip 172.0.0.2 auth
-docker run -d -p 8080:8080 --net microservices-grid --ip 172.0.0.3 db
+docker run -d -p 8082:8082 --net microservices-grid --ip 172.0.0.3 db
+docker run -d -p 6379:6379 --net microservices-grid --ip 172.0.0.4 redis
+mvn clean test
+```
+or
+```shell script
+cd src/test/resources
+docker-compose up
 mvn clean test
 ```
 
@@ -41,6 +48,8 @@ docker login
 docker images
 docker tag <image-id> sorindan86/docker-sorin:auth
 docker tag <image-id> sorindan86/docker-sorin:db
+docker tag <image-id> sorindan86/docker-sorin:redis
 docker push sorindan86/docker-sorin:auth
 docker push sorindan86/docker-sorin:db
+docker push sorindan86/docker-sorin:redis
 ```
