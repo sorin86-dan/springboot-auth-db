@@ -10,10 +10,13 @@ import static org.testng.Assert.assertTrue;
 
 public class DefaultTest {
 
-    private String authIpAddress = "172.0.0.2";
-    private String dbIpAddress = "172.0.0.3";
-//    private String authIpAddress = "localhost";
-//    private String dbIpAddress = "localhost";
+    // Using service with Docker containers
+//    private String authIpAddress = "172.0.0.2";
+//    private String dbIpAddress = "172.0.0.3";
+
+    // Using service locally
+    private String authIpAddress = "localhost";
+    private String dbIpAddress = "localhost";
 
     @BeforeTest
     public void setUp() {
@@ -35,6 +38,17 @@ public class DefaultTest {
     }
 
     @Test
+    public void checkMessageEndpointInvalidBody() {
+        Response response = RestAssured.given()
+                .header("Content-Type", "application/json")
+                .body("{\"id\":\"OK\"}")
+                .post("http://"+ authIpAddress + ":8081/get-message");
+
+        assertEquals(response.getStatusCode(), 400);
+        assertTrue(response.getBody().asString().contains("Missing 'db' field!"));
+    }
+
+    @Test
     public void checkMessageEndpointMissingAuth() {
         Response response = RestAssured.given()
                 .header("Content-Type", "application/json")
@@ -42,7 +56,7 @@ public class DefaultTest {
                 .post("http://"+ authIpAddress + ":8081/get-message");
 
         assertEquals(response.getStatusCode(), 401);
-        assertTrue(response.getBody().asString().contains("Authorization failed"));
+        assertEquals(response.getBody().asString(), "Authorization failed");
     }
 
     @Test
@@ -96,6 +110,17 @@ public class DefaultTest {
 
         assertEquals(response.getStatusCode(), 200);
         assertTrue(response.getBody().asString().contains("Baza de date aleasa este: Redis"));
+    }
+
+    @Test
+    public void setMessageEndpointInvalidBody() {
+        Response response = RestAssured.given()
+                .header("Content-Type", "application/json")
+                .body("{\"id\":\"OK\"}")
+                .post("http://"+ authIpAddress + ":8081/set-message");
+
+        assertEquals(response.getStatusCode(), 400);
+        assertTrue(response.getBody().asString().contains("Missing 'message' field!"));
     }
 
 }
