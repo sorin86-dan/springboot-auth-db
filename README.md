@@ -35,6 +35,7 @@ mvn clean test
 ```
 or
 ```shell script
+mvn clean install -DskipTests
 cd src/test/resources
 docker-compose up
 mvn clean test
