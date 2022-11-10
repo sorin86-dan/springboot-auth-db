@@ -11,12 +11,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class DefaultTest {
 
     // Using service with Docker containers
-//    private String authIpAddress = "172.0.0.2";
-//    private String dbIpAddress = "172.0.0.3";
+    private String authIpAddress = "172.0.0.2";
+    private String dbIpAddress = "172.0.0.3";
 
     // Using service locally
-    private String authIpAddress = "localhost";
-    private String dbIpAddress = "localhost";
+//    private String authIpAddress = "localhost";
+//    private String dbIpAddress = "localhost";
 
     @BeforeEach
     public void setUp() {
