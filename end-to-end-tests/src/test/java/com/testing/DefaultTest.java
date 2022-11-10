@@ -33,7 +33,7 @@ public class DefaultTest {
                 .body("{\"id\":\"OK\", \"db\":\"Redis\"}")
                 .post("http://"+ authIpAddress + ":8081/get-message");
 
-        assertEquals(response.getStatusCode(), 200);
+        assertEquals(200, response.getStatusCode());
         assertTrue(response.getBody().asString().contains("The chosen database is: Redis"));
     }
 
@@ -44,8 +44,8 @@ public class DefaultTest {
                 .body("{\"id\":\"OK\"}")
                 .post("http://"+ authIpAddress + ":8081/get-message");
 
-        assertEquals(response.getStatusCode(), 400);
-        assertTrue(response.getBody().asString().contains("Missing 'db' field!"));
+        assertEquals(400, response.getStatusCode());
+        assertEquals("Missing 'db' field!", response.getBody().asString());
     }
 
     @Test
@@ -55,8 +55,8 @@ public class DefaultTest {
                 .body("{\"db\":\"Redis\"}")
                 .post("http://"+ authIpAddress + ":8081/get-message");
 
-        assertEquals(response.getStatusCode(), 401);
-        assertEquals(response.getBody().asString(), "Authorization failed");
+        assertEquals(401, response.getStatusCode());
+        assertEquals("Authorization failed", response.getBody().asString());
     }
 
     @Test
@@ -66,8 +66,8 @@ public class DefaultTest {
                 .body("{\"id\":\"NOK\", \"db\":\"Redis\"}")
                 .post("http://"+ authIpAddress + ":8081/get-message");
 
-        assertEquals(response.getStatusCode(), 401);
-        assertEquals(response.getBody().asString(), "Authorization failed");
+        assertEquals(401, response.getStatusCode());
+        assertEquals("Authorization failed", response.getBody().asString());
     }
 
     @Test
@@ -77,8 +77,8 @@ public class DefaultTest {
                 .body("{\"db\":\"Redis\"}")
                 .post("http://"+ dbIpAddress + ":8082/get-db-message");
 
-        assertEquals(response.getStatusCode(), 400);
-        assertEquals(response.getBody().jsonPath().get("error"), "Bad Request");
+        assertEquals(400, response.getStatusCode());
+        assertEquals("Bad Request", response.getBody().jsonPath().get("error"));
     }
 
     @Test
@@ -89,8 +89,8 @@ public class DefaultTest {
                 .body("{\"db\":\"Redis\"}")
                 .post("http://"+ dbIpAddress + ":8082/get-db-message");
 
-        assertEquals(response.getStatusCode(), 401);
-        assertEquals(response.getBody().asString(), "Authorization failed");
+        assertEquals(401, response.getStatusCode());
+        assertEquals("Authorization failed", response.getBody().asString());
     }
 
     @Test
@@ -100,16 +100,16 @@ public class DefaultTest {
                 .body("{\"id\":\"OK\", \"message\":\"Baza de date aleasa este: \"}")
                 .post("http://"+ authIpAddress + ":8081/set-message");
 
-        assertEquals(response.getStatusCode(), 200);
-        assertTrue(response.getBody().asString().contains("Message updated successfully!"));
+        assertEquals(200, response.getStatusCode());
+        assertEquals("Message updated successfully!", response.getBody().asString());
 
         response = RestAssured.given()
                 .header("Content-Type", "application/json")
                 .body("{\"id\":\"OK\", \"db\":\"Redis\"}")
                 .post("http://"+ authIpAddress + ":8081/get-message");
 
-        assertEquals(response.getStatusCode(), 200);
-        assertTrue(response.getBody().asString().contains("Baza de date aleasa este: Redis"));
+        assertEquals(200, response.getStatusCode());
+        assertEquals("Baza de date aleasa este: Redis", response.getBody().asString());
     }
 
     @Test
@@ -119,8 +119,52 @@ public class DefaultTest {
                 .body("{\"id\":\"OK\"}")
                 .post("http://"+ authIpAddress + ":8081/set-message");
 
-        assertEquals(response.getStatusCode(), 400);
-        assertTrue(response.getBody().asString().contains("Missing 'message' field!"));
+        assertEquals(400, response.getStatusCode());
+        assertEquals("Missing 'message' field!", response.getBody().asString());
     }
 
+    @Test
+    public void setMessageEndpointMissingAuth() {
+        Response response = RestAssured.given()
+                .header("Content-Type", "application/json")
+                .body("{\"message\":\"Baza de date aleasa este: \"}")
+                .post("http://"+ authIpAddress + ":8081/set-message");
+
+        assertEquals(401, response.getStatusCode());
+        assertEquals("Authorization failed", response.getBody().asString());
+    }
+
+    @Test
+    public void setMessageEndpointWrongAuth() {
+        Response response = RestAssured.given()
+                .header("Content-Type", "application/json")
+                .body("{\"id\":\"NOK\", \"message\":\"Baza de date aleasa este: \"}")
+                .post("http://"+ authIpAddress + ":8081/set-message");
+
+        assertEquals(401, response.getStatusCode());
+        assertEquals("Authorization failed", response.getBody().asString());
+    }
+
+    @Test
+    public void setMessageEndpointMissingHeader() {
+        Response response = RestAssured.given()
+                .header("Content-Type", "application/json")
+                .body("{\"message\":\"Baza de date aleasa este: \"}")
+                .post("http://"+ dbIpAddress + ":8082/set-db-message");
+
+        assertEquals(400, response.getStatusCode());
+        assertEquals("Bad Request", response.getBody().jsonPath().get("error"));
+    }
+
+    @Test
+    public void setMessageEndpointWrongHeader() {
+        Response response = RestAssured.given()
+                .header("Content-Type", "application/json")
+                .header("id", "NOK")
+                .body("{\"message\":\"Baza de date aleasa este: \"}")
+                .post("http://"+ dbIpAddress + ":8082/set-db-message");
+
+        assertEquals(401, response.getStatusCode());
+        assertEquals("Authorization failed", response.getBody().asString());
+    }
 }
