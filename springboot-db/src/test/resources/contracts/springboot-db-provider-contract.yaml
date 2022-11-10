@@ -1,0 +1,95 @@
+request:
+  method: POST
+  url: /set-db-message
+  body:
+    message: "Baza de date aleasa: "
+  headers:
+    Content-Type: application/json
+    id: ""
+response:
+  status: 401
+  body: "Authorization failed"
+---
+request:
+  method: POST
+  url: /set-db-message
+  body:
+    message: "Baza de date aleasa: "
+  headers:
+    Content-Type: application/json
+    id: "DUMMY"
+response:
+  status: 401
+  body: "Authorization failed"
+---
+request:
+  method: POST
+  url: /set-db-message
+  body:
+    message: "Baza de date aleasa: "
+  headers:
+    Content-Type: application/json
+    id: "OK"
+response:
+  status: 200
+  body: "Message updated successfully!"
+---
+request:
+  method: POST
+  url: /set-db-message
+  body:
+    message: null
+  headers:
+    Content-Type: application/json
+    id: "OK"
+response:
+  status: 200
+  body: "Missing 'message' field!"
+---
+request:
+  method: POST
+  url: /get-db-message
+  body:
+    db: "Redis"
+  headers:
+    Content-Type: application/json
+    id: ""
+response:
+  status: 401
+  body: "Authorization failed"
+---
+request:
+  method: POST
+  url: /get-db-message
+  body:
+    db: "Redis"
+  headers:
+    Content-Type: application/json
+    id: "DUMMY"
+response:
+  status: 401
+  body: "Authorization failed"
+---
+request:
+  method: POST
+  url: /get-db-message
+  body:
+    db: "Redis"
+  headers:
+    Content-Type: application/json
+    id: "OK"
+response:
+  status: 200
+  body: "Message updated successfully!"
+---
+request:
+  method: POST
+  url: /get-db-message
+  body:
+    db: null
+  headers:
+    Content-Type: application/json
+    id: "OK"
+response:
+  status: 200
+  body: "Missing 'db' field!"

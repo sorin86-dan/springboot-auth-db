@@ -6,9 +6,9 @@ These automated tests will run on microservices **springboot-auth** and **spring
 
 In the folder *springboot-auth* run:
 ```shell script
-mvn clean install
-mvn package spring-boot:repackage
-cp target/springboot-auth-1.0-SNAPSHOT.jar src/main/resources/
+mvn clean install -DskipTests
+mvn package spring-boot:repackage -DskipTests
+cp target/springboot-auth-1.0.0-SNAPSHOT.jar src/main/resources/
 docker build -t auth src/main/resources
 ```
 
@@ -16,15 +16,15 @@ docker build -t auth src/main/resources
 
 In the folder *springboot-db* run:
 ```shell script
-mvn clean install
-mvn package spring-boot:repackage
-cp target/springboot-db-1.0-SNAPSHOT.jar src/main/resources/
+mvn clean install -DskipTests
+mvn package spring-boot:repackage -DskipTests
+cp target/springboot-db-1.0.0-SNAPSHOT.jar src/main/resources/
 docker build -t db src/main/resources
 ```
 
-### Run docker containers and the automated tests
+## Run docker containers and the automated tests
 
-In the folder *springboot-auth-db* run:
+In the folder *end-to-end-tests* run:
 ```shell script
 mvn clean install -DskipTests
 docker network create --subnet=172.0.0.0/16 microservices-grid
