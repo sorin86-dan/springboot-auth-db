@@ -4,19 +4,22 @@ import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@ExtendWith(SpringExtension.class)
+@SpringBootTest(classes = DefaultTest.class)
 public class DefaultTest {
 
-    // Using service with Docker containers
-    private String authIpAddress = "172.0.0.2";
-    private String dbIpAddress = "172.0.0.3";
-
-    // Using service locally
-//    private String authIpAddress = "localhost";
-//    private String dbIpAddress = "localhost";
+    @Value("${auth.ip.address:localhost}")
+    private String authIpAddress;
+    @Value("${db.ip.address:localhost}")
+    private String dbIpAddress;
 
     @BeforeEach
     public void setUp() {

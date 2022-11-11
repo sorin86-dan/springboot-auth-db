@@ -1,4 +1,15 @@
-# Running automated tests
+# Running automated tests locally
+
+To run the end-to-end-tests you need do change all references to Docker containers:
+- comment **db.ip.address** in *springboot-auth/src/main/resources/application.properties*;
+- comment **redis.ip.address** in *springboot-db/src/main/resources/application.properties*;
+- comment lines in *end-to-end-tests/src/test/resources/application.properties*.
+
+After this run **AuthMainApp.java**, **DBMainApp.java** and start Redis server (makes sure that it runs on default values: **localhost:6379**).
+
+Now you can run tests from **DefaultTest.java**** file.
+
+# Running automated tests using Docker
 
 These automated tests will run on microservices **springboot-auth** and **springboot-db**; with these microservices running through Docker containers.
 
@@ -37,7 +48,7 @@ or
 ```shell script
 mvn clean install -DskipTests
 cd src/test/resources
-docker-compose up
+docker-compose up -d
 mvn clean test
 ```
 
