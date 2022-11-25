@@ -28,11 +28,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class PactConsumerGetDBMessageTest {
     @Pact(provider = "SpringBootDB", consumer = "SpringBootAuth")
     public RequestResponsePact getDbDataIdEmptyRule (PactDslWithProvider builder) {
+        Map<String, String> headers = new HashMap<>(){
+            {
+                put("Content-Type", "application/json");
+                put("id", "");
+            }
+        };
+        PactDslJsonBody jsonBody = new PactDslJsonBody().stringType("db", "Redis");
+
         return builder
                 .uponReceiving("a request to get data from DB with emtpy id")
                 .method("POST")
-                .headers("id", "")
-                .body("{}")
+                .headers(headers)
+                .body(jsonBody)
                 .path("/get-db-message")
                 .willRespondWith()
                 .body("Authorization failed")
@@ -43,16 +51,17 @@ public class PactConsumerGetDBMessageTest {
     @Test
     @PactTestFor(pactMethod = "getDbDataIdEmptyRule", pactVersion = PactSpecVersion.V3)
     public void testGetDbDataIdEmpty(MockServer mockServer) {
-        Map<String, String> headers = new HashMap<>();
-
-        headers.put("Content-Type", "application/json");
-        headers.put("id", "");
-
+        Map<String, String> headers = new HashMap<>(){
+            {
+                put("Content-Type", "application/json");
+                put("id", "");
+            }
+        };
         RestAssured.baseURI = mockServer.getUrl();
         Response response = RestAssured
                 .given()
                 .headers(headers)
-                .body("{}")
+                .body("{\"db\":\"Redis\"}")
                 .when()
                 .post("/get-db-message");
 
@@ -62,11 +71,19 @@ public class PactConsumerGetDBMessageTest {
 
     @Pact(provider = "SpringBootDB", consumer = "SpringBootAuth")
     public RequestResponsePact getDbDataIdInvalidRule (PactDslWithProvider builder) {
+        Map<String, String> headers = new HashMap<>(){
+            {
+                put("Content-Type", "application/json");
+                put("id", "DUMMY");
+            }
+        };
+        PactDslJsonBody jsonBody = new PactDslJsonBody().stringType("db", "Redis");
+
         return builder
                 .uponReceiving("a request to get data from DB with invalid id")
                 .method("POST")
-                .headers("id", "DUMMY")
-                .body("{}")
+                .headers(headers)
+                .body(jsonBody)
                 .path("/get-db-message")
                 .willRespondWith()
                 .body("Authorization failed")
@@ -77,16 +94,17 @@ public class PactConsumerGetDBMessageTest {
     @Test
     @PactTestFor(pactMethod = "getDbDataIdInvalidRule", pactVersion = PactSpecVersion.V3)
     public void testGetDbDataIdInvalid(MockServer mockServer) {
-        Map<String, String> headers = new HashMap<>();
-
-        headers.put("Content-Type", "application/json");
-        headers.put("id", "DUMMY");
-
+        Map<String, String> headers = new HashMap<>(){
+            {
+                put("Content-Type", "application/json");
+                put("id", "DUMMY");
+            }
+        };
         RestAssured.baseURI = mockServer.getUrl();
         Response response = RestAssured
                 .given()
                 .headers(headers)
-                .body("{}")
+                .body("{\"db\":\"Redis\"}")
                 .when()
                 .post("/get-db-message");
 
@@ -96,11 +114,12 @@ public class PactConsumerGetDBMessageTest {
 
     @Pact(provider = "SpringBootDB", consumer = "SpringBootAuth")
     public RequestResponsePact getDbDataRule (PactDslWithProvider builder) {
-        Map<String, String> headers = new HashMap<>();
-
-        headers.put("Content-Type", "application/json");
-        headers.put("id", "OK");
-
+        Map<String, String> headers = new HashMap<>(){
+            {
+                put("Content-Type", "application/json");
+                put("id", "OK");
+            }
+        };
         PactDslJsonBody jsonBody = new PactDslJsonBody().stringType("db", "Redis");
 
         return builder
@@ -119,11 +138,12 @@ public class PactConsumerGetDBMessageTest {
     @Test
     @PactTestFor(pactMethod = "getDbDataRule", pactVersion = PactSpecVersion.V3)
     public void testGetDbData(MockServer mockServer) {
-        Map<String, String> headers = new HashMap<>();
-
-        headers.put("Content-Type", "application/json");
-        headers.put("id", "OK");
-
+        Map<String, String> headers = new HashMap<>(){
+            {
+                put("Content-Type", "application/json");
+                put("id", "OK");
+            }
+        };
         RestAssured.baseURI = mockServer.getUrl();
         Response response = RestAssured
                 .given()
@@ -138,11 +158,12 @@ public class PactConsumerGetDBMessageTest {
 
     @Pact(provider = "SpringBootDB", consumer = "SpringBootAuth")
     public RequestResponsePact getDbDataRuleInvalidBody (PactDslWithProvider builder) {
-        Map<String, String> headers = new HashMap<>();
-
-        headers.put("Content-Type", "application/json");
-        headers.put("id", "OK");
-
+        Map<String, String> headers = new HashMap<>(){
+            {
+                put("Content-Type", "application/json");
+                put("id", "OK");
+            }
+        };
         PactDslJsonBody jsonBody = new PactDslJsonBody().nullValue("db");
 
         return builder
@@ -160,11 +181,12 @@ public class PactConsumerGetDBMessageTest {
     @Test
     @PactTestFor(pactMethod = "getDbDataRuleInvalidBody", pactVersion = PactSpecVersion.V3)
     public void testGetDbDataInvalidBody(MockServer mockServer) {
-        Map<String, String> headers = new HashMap<>();
-
-        headers.put("Content-Type", "application/json");
-        headers.put("id", "OK");
-
+        Map<String, String> headers = new HashMap<>(){
+            {
+                put("Content-Type", "application/json");
+                put("id", "OK");
+            }
+        };
         RestAssured.baseURI = mockServer.getUrl();
         Response response = RestAssured
                 .given()

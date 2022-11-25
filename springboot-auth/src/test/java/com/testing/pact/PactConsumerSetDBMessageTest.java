@@ -26,11 +26,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class PactConsumerSetDBMessageTest {
     @Pact(provider = "SpringBootDB", consumer = "SpringBootAuth")
     public RequestResponsePact setDbDataIdEmptyRule (PactDslWithProvider builder) {
+        Map<String, String> headers = new HashMap<>(){
+            {
+                put("Content-Type", "application/json");
+                put("id", "");
+            }
+        };
+        PactDslJsonBody jsonBody = new PactDslJsonBody().stringType("message");
+
         return builder
                 .uponReceiving("a request to set data from DB with emtpy id")
                 .method("POST")
-                .headers("id", "")
-                .body("{}")
+                .headers(headers)
+                .body(jsonBody)
                 .path("/set-db-message")
                 .willRespondWith()
                 .body("Authorization failed")
@@ -39,18 +47,19 @@ public class PactConsumerSetDBMessageTest {
     }
 
     @Test
-    @PactTestFor(pactMethod = "setDbDataIdEmptyRule", port = "8080", pactVersion = PactSpecVersion.V3)
+    @PactTestFor(pactMethod = "setDbDataIdEmptyRule", pactVersion = PactSpecVersion.V3)
     public void testSetDbDataIdEmpty(MockServer mockServer) {
-        Map<String, String> headers = new HashMap<>();
-
-        headers.put("Content-Type", "application/json");
-        headers.put("id", "");
-
+        Map<String, String> headers = new HashMap<>(){
+            {
+                put("Content-Type", "application/json");
+                put("id", "");
+            }
+        };
         RestAssured.baseURI = mockServer.getUrl();
         Response response = RestAssured
                 .given()
                 .headers(headers)
-                .body("{}")
+                .body("{\"message\":\"Baza de date aleasa este: \"}")
                 .when()
                 .post("/set-db-message");
 
@@ -61,11 +70,19 @@ public class PactConsumerSetDBMessageTest {
 
     @Pact(provider = "SpringBootDB", consumer = "SpringBootAuth")
     public RequestResponsePact setDbDataIdInvalidRule (PactDslWithProvider builder) {
+        Map<String, String> headers = new HashMap<>(){
+            {
+                put("Content-Type", "application/json");
+                put("id", "DUMMY");
+            }
+        };
+        PactDslJsonBody jsonBody = new PactDslJsonBody().stringType("message");
+
         return builder
                 .uponReceiving("a request to set data from DB with invalid id")
                 .method("POST")
-                .headers("id", "DUMMY")
-                .body("{}")
+                .headers(headers)
+                .body(jsonBody)
                 .path("/set-db-message")
                 .willRespondWith()
                 .body("Authorization failed")
@@ -74,18 +91,19 @@ public class PactConsumerSetDBMessageTest {
     }
 
     @Test
-    @PactTestFor(pactMethod = "setDbDataIdInvalidRule", port = "8080", pactVersion = PactSpecVersion.V3)
+    @PactTestFor(pactMethod = "setDbDataIdInvalidRule", pactVersion = PactSpecVersion.V3)
     public void testSetDbDataIdInvalid(MockServer mockServer) {
-        Map<String, String> headers = new HashMap<>();
-
-        headers.put("Content-Type", "application/json");
-        headers.put("id", "DUMMY");
-
+        Map<String, String> headers = new HashMap<>(){
+            {
+                put("Content-Type", "application/json");
+                put("id", "DUMMY");
+            }
+        };
         RestAssured.baseURI = mockServer.getUrl();
         Response response = RestAssured
                 .given()
                 .headers(headers)
-                .body("{}")
+                .body("{\"message\":\"Baza de date aleasa este: \"}")
                 .when()
                 .post("/set-db-message");
 
@@ -95,13 +113,13 @@ public class PactConsumerSetDBMessageTest {
 
     @Pact(provider = "SpringBootDB", consumer = "SpringBootAuth")
     public RequestResponsePact setDbDataRule (PactDslWithProvider builder) {
-        Map<String, String> headers = new HashMap<>();
-
-        headers.put("Content-Type", "application/json");
-        headers.put("id", "OK");
-
-        PactDslJsonBody jsonBody = new PactDslJsonBody()
-                .stringType("message");
+        Map<String, String> headers = new HashMap<>(){
+            {
+                put("Content-Type", "application/json");
+                put("id", "OK");
+            }
+        };
+        PactDslJsonBody jsonBody = new PactDslJsonBody().stringType("message");
 
         return builder
                 .uponReceiving("a valid request to set data from DB")
@@ -116,13 +134,14 @@ public class PactConsumerSetDBMessageTest {
     }
 
     @Test
-    @PactTestFor(pactMethod = "setDbDataRule", port = "8080", pactVersion = PactSpecVersion.V3)
+    @PactTestFor(pactMethod = "setDbDataRule", pactVersion = PactSpecVersion.V3)
     public void testSetDbData(MockServer mockServer) {
-        Map<String, String> headers = new HashMap<>();
-
-        headers.put("Content-Type", "application/json");
-        headers.put("id", "OK");
-
+        Map<String, String> headers = new HashMap<>(){
+            {
+                put("Content-Type", "application/json");
+                put("id", "OK");
+            }
+        };
         RestAssured.baseURI = mockServer.getUrl();
         Response response = RestAssured
                 .given()
@@ -137,11 +156,12 @@ public class PactConsumerSetDBMessageTest {
 
     @Pact(provider = "SpringBootDB", consumer = "SpringBootAuth")
     public RequestResponsePact setDbDataRuleInvalidBody (PactDslWithProvider builder) {
-        Map<String, String> headers = new HashMap<>();
-
-        headers.put("Content-Type", "application/json");
-        headers.put("id", "OK");
-
+        Map<String, String> headers = new HashMap<>(){
+            {
+                put("Content-Type", "application/json");
+                put("id", "OK");
+            }
+        };
         PactDslJsonBody jsonBody = new PactDslJsonBody().nullValue("message");
 
         return builder
@@ -157,13 +177,14 @@ public class PactConsumerSetDBMessageTest {
     }
 
     @Test
-    @PactTestFor(pactMethod = "setDbDataRuleInvalidBody", port = "8080", pactVersion = PactSpecVersion.V3)
+    @PactTestFor(pactMethod = "setDbDataRuleInvalidBody", pactVersion = PactSpecVersion.V3)
     public void setDbDataRuleInvalidBody(MockServer mockServer) {
-        Map<String, String> headers = new HashMap<>();
-
-        headers.put("Content-Type", "application/json");
-        headers.put("id", "OK");
-
+        Map<String, String> headers = new HashMap<>(){
+            {
+                put("Content-Type", "application/json");
+                put("id", "OK");
+            }
+        };
         RestAssured.baseURI = mockServer.getUrl();
         Response response = RestAssured
                 .given()
