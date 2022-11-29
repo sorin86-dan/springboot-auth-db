@@ -80,7 +80,7 @@ request:
     id: "OK"
 response:
   status: 200
-  body: "Message updated successfully!"
+  body: "The chosen database is: Redis"
 ---
 request:
   method: POST
