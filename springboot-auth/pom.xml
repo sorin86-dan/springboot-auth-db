@@ -13,6 +13,7 @@
     <groupId>com.testing</groupId>
     <artifactId>springboot-auth</artifactId>
     <version>1.0.0-SNAPSHOT</version>
+
     <build>
         <plugins>
             <plugin>
