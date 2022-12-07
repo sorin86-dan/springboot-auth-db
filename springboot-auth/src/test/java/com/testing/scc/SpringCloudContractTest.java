@@ -87,7 +87,7 @@ public class SpringCloudContractTest {
         ResponseEntity<String> result = new TestRestTemplate().postForEntity(uri, request, String.class);
 
         assertEquals(HttpStatus.OK, result.getStatusCode());
-        assertEquals("Message updated successfully!", result.getBody());
+        assertEquals("The chosen database is: Redis", result.getBody());
     }
 
     @Test

@@ -33,7 +33,6 @@
                 <configuration>
                     <testFramework>JUNIT5</testFramework>
                     <packageWithBaseClasses>com.testing.scc</packageWithBaseClasses>
-                    <baseClassForTests>ContractVerifierBase</baseClassForTests>
                     <contractsDirectory>src/test/resources/contracts</contractsDirectory>
                 </configuration>
                 <dependencies>

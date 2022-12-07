@@ -31,7 +31,7 @@ public class PactConsumerGetDBMessageTest {
                 put("id", "");
             }
         };
-        PactDslJsonBody jsonBody = new PactDslJsonBody().stringType("db", "Redis");
+        PactDslJsonBody jsonBody = new PactDslJsonBody().stringType("db");
 
         return builder
                 .uponReceiving("a request to get data from DB with emtpy id")
@@ -74,7 +74,7 @@ public class PactConsumerGetDBMessageTest {
                 put("id", "DUMMY");
             }
         };
-        PactDslJsonBody jsonBody = new PactDslJsonBody().stringType("db", "Redis");
+        PactDslJsonBody jsonBody = new PactDslJsonBody().stringType("db");
 
         return builder
                 .uponReceiving("a request to get data from DB with invalid id")
